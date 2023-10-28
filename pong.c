@@ -152,11 +152,18 @@ void clearScreen() {
 // - замедлять скорость, когда мяч у ракеток
 // - первый игрок может смещаться с мячом
 // - ПРОПАДАЕТ МЯЧ, когда касается ракатеки
+// - СЧЕТ
+
+void info() {
+    printf("Управление:\n\n");
+    printf("Левый игрок: A/a - вверх, Z/z - вниз\t\t\tПравый игрок: K/k - вверх, M/m - вниз\n\n\n");
+}
 
 void run() {
     char userInput;
     while(1) {
         clearScreen();
+        info();
         draw();
 
         userInput = getchar();
