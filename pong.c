@@ -9,23 +9,12 @@
 #define TOP_BORDER_Y 13
 #define BOTTOM_BORDER_X -12
 
-// int leftRacketX = LEFT_BORDER_X;
-// int leftRacketY = 1;
-// int rightRacketX = RIGHT_BORDER_X;
-// int rightRacketY = 1;
-
-// int convertCenterXCoordToTopLeftCorner(int x) {
-//     return WIDTH / 2 + x;
-// }
-
-// int convertCenterYCoordToTopLeftCorner(int y) {
-//     return HEIGHT / 2 + 1 - y;
-// }
-
 int leftRacketX = 2;
 int leftRacketY = HEIGHT / 2;
 int rightRacketX = WIDTH - 1;
 int rightRacketY = HEIGHT / 2;
+int ballX = WIDTH / 2;
+int ballY = HEIGHT / 2 + 1;
 
 void draw() {
     int leftRacketPartsPrinted = 0;
@@ -42,17 +31,21 @@ void draw() {
     for (int y = 1; y <= HEIGHT; ++y) {
         printf("#");
         for (int x = 1; x <= WIDTH; ++x) {
-
             
+            // Отрисовка ракеток
             if (leftRacketX == x && (leftRacketY + leftRacketPartsPrinted) == y && leftRacketPartsPrinted < RACKET_SIZE) {
                 printf("|");
                 ++leftRacketPartsPrinted;
             } else if (rightRacketX == x && (rightRacketY + rightRacketPartsPrinted) == y && rightRacketPartsPrinted < RACKET_SIZE) {
                 printf("|");
                 ++rightRacketPartsPrinted;
+            // Отрисовка мяча
+            } else if (x == ballX && y == ballY) { 
+                printf("@");
             } else {
                 printf(" ");
             }
+
 
         }
         printf("#\n");
@@ -67,13 +60,13 @@ void draw() {
 }
 
 void moveLeftRacket(int delta) {
-    if (1 <= leftRacketY + delta && leftRacketY + delta <= HEIGHT) {
+    if (1 <= leftRacketY + delta && leftRacketY + delta + 2 <= HEIGHT) {
         leftRacketY += delta;
     }
 }
 
 void moveRightRacket(int delta) {
-    if (1 <= rightRacketY + delta && rightRacketY + delta <= HEIGHT) {
+    if (1 <= rightRacketY + delta && rightRacketY + delta + 2 <= HEIGHT) {
         rightRacketY += delta;
     }
 }
@@ -82,8 +75,36 @@ void clearScreen() {
     printf("\e[1;1H\e[2J");
 }
 
-int main () {
-    draw();
+// TODO:
+// - мб игроки должны шагать по очереди
+// 
 
-    
+void run() {
+    char userInput;
+    while(1) {
+        clearScreen();
+        draw();
+
+        scanf("%c", &userInput);
+
+        if (userInput == 'A' || userInput == 'a') {
+            moveLeftRacket(-1);
+        }
+        if (userInput == 'Z' || userInput == 'z') {
+            moveLeftRacket(1);
+        }
+        if (userInput == 'K' || userInput == 'k') {
+            moveRightRacket(-1);
+        }
+        if (userInput == 'M' || userInput == 'm') {
+            moveRightRacket(1);
+        }
+        if (userInput == 'Q' || userInput == 'q') {
+            break;
+        }
+    }
+}
+
+int main () {
+    run();    
 }
